@@ -26,7 +26,7 @@ Para executar a aplicação:
  }
 ]
 ```
-6) Abrir o Projeto Desafio2 (Referente a importação dos arquivos 'DadosMoeda.csv' e 'CotacaoMoeda.csv' e geração de arquivo de Resultado)
+6) Abrir o Projeto Desafio2 (Referente a importação dos arquivos 'DadosMoeda.csv' e 'DadosCotacao.csv' e geração de arquivo de Resultado)
 7) Editar a ConnectString corresponde as configuraçõs do SQL Server: 'Data\DBConnect.cs'
 8) Executar o Desafio2;
 9) Autmáticamente a cada 2 minutos o aplicação executa uma chamada no endpoint 'GetItemFila' em busca da última moeda adicionada na fila que será removida da fila e gerado arquivo de Resultado.
