@@ -15,49 +15,57 @@ namespace TesteDesafio2.Data
         private string _ConnectString = "Server=ESN792N1249428\\SQLEXPRESS;Database=WiproBD;Trusted_Connection=True;";
 
         public void ImportarDadosMoeda(string path)
-        {
+        {           
+            string query = $"BULK INSERT DadosMoeda FROM '{path}' " +
+                            "WITH( FiRSTROW = 2, FIELDTERMINATOR = ';')";
+            
+            //CORRECAO CAMPO DE DATA
             string query2 = "UPDATE DadosMoeda SET DATA_REF = SUBSTRING(DATA_REF, 1, 10)";
-
-            string query = $"BULK INSERT DadosMoeda from '{path}' " +
-                            "with( " +
-                                "FiRSTROW = 2," +
-                                "FIELDTERMINATOR = ';'," +
-                                "ROWTERMINATOR = '\n'" +
-                            ")";
-
-
-            using (SqlConnection conexao = new SqlConnection(_ConnectString))
+            try
             {
-                conexao.Execute("truncate table DadosMoeda");
-                conexao.Execute(query);
-                conexao.Execute(query2);
+                using (SqlConnection conexao = new SqlConnection(_ConnectString))
+                {
+                    conexao.Execute("TRUNCATE TABLE DadosMoeda");
+                    conexao.Execute(query);
+                    conexao.Execute(query2);
 
+                }
+                System.Console.WriteLine("### Importação Realizada! ###");
             }
-
-            System.Console.WriteLine("### Importação Realizada! ###");
+            catch (Exception ex){
+                System.Console.WriteLine("### Falha na importação! Verique os banco de dados. ###");
+                System.Console.WriteLine("Erro: ", ex.Message);
+            }            
+            
         }
 
         public void ImportarDadosCotacao(string path)
         {
             string query = $"BULK INSERT DadosCotacao from '{path}' " +
-                            "with( " +
-                                "FiRSTROW = 2, " +
-                                "FIELDTERMINATOR = ';', " +
-                                "ROWTERMINATOR = '\n' " +
-                            ")";
+                            "WITH(FiRSTROW = 2, FIELDTERMINATOR = ';')";
 
-            string query2 = "update DadosCotacao set dat_cotacao = CONCAT ( SUBSTRING(dat_cotacao, 7, 4),'-', SUBSTRING(dat_cotacao, 4, 2), '-', SUBSTRING(dat_cotacao, 1, 2) )";
+            string query2 = "UPDATE DadosCotacao SET DAT_COTACAO = CONCAT ( SUBSTRING(DAT_COTACAO, 7, 4),'-', SUBSTRING(DAT_COTACAO, 4, 2), '-', SUBSTRING(DAT_COTACAO, 1, 2) )";
 
-
-            using (SqlConnection conexao = new SqlConnection(_ConnectString))
+            try
             {
-                conexao.Execute("truncate table DadosCotacao");
-                conexao.Execute(query);
-                conexao.Execute(query2);
+                using (SqlConnection conexao = new SqlConnection(_ConnectString))
+                {
+                    conexao.Execute("TRUNCATE TABLE DadosCotacao");
+                    conexao.Execute(query);
+                    conexao.Execute(query2);
+                }
+
+                System.Console.WriteLine("### Importação Realizada! ###");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("### Falha na importação! Verique os banco de dados. ###");
+                System.Console.WriteLine("Erro: ", ex.Message);
 
             }
 
-            System.Console.WriteLine("### Importação Realizada! ###");
+
+
         }
 
         public List<DadosMoedaResultado> ObterCotacao(Moeda moeda)
@@ -66,16 +74,16 @@ namespace TesteDesafio2.Data
                            "TAB.ID_MOEDA,                                                                                                             " +
                            "TAB.DATA_REF,                                                                                                             " +
                            "TAB.COD_COTACAO,                                                                                                          " +
-                           "(select vlr_cotacao from DadosCotacao where TAB.cod_cotacao = cod_cotacao and TAB.DATA_REF = dat_cotacao) as vlr_cotacao  " +
+                           "(SELECT VLR_COTACAO FROM DadosCotacao WHERE TAB.COD_COTACAO = COD_COTACAO and TAB.DATA_REF = DAT_COTACAO) as VLR_COTACAO  " +
                            "       from( " +
                            "select " +
                            " ID_MOEDA, " +
                            " DATA_REF, " +
-                           " (select COD_COTACAO from De_Para where DM.ID_MOEDA = ID_MOEDA) as cod_cotacao " +
-                           "from DadosMoeda DM " +
+                           " (SELECT COD_COTACAO FROM DePara WHERE DM.ID_MOEDA = ID_MOEDA) as COD_COTACAO " +
+                           "FROM DadosMoeda DM " +
                            "       ) TAB " +
-                           "   where " +
-                           $"       (ID_MOEDA = '{moeda.moeda}' and(DATA_REF BETWEEN '{moeda.data_inicio}' AND '{moeda.data_fim}')) " +
+                           "   WHERE " +
+                           $"       (ID_MOEDA = '{moeda.moeda}' AND (DATA_REF BETWEEN '{moeda.data_inicio}' AND '{moeda.data_fim}')) " +
                            "       ";
 
             using (SqlConnection conexao = new SqlConnection(_ConnectString))
