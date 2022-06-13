@@ -1,5 +1,5 @@
 # WiproDesafioBackend
-Carlos Alexandre Cavalheiro
+Desenvolvedor - Carlos Alexandre Cavalheiro
 
 Para executar a aplicação:
 1) Executar o script de criação do banco de dados em SQL Server: 'ScriptWiproDesafioBD.sql'
