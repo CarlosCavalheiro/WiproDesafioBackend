@@ -2,12 +2,6 @@
 1) Com base no modelo acima, escreva um comando SQL que liste a quantidade de processos por 
 Status com sua descrição.
 /**--Exercicio 1 - TESTE SQL--**/
-SELECT idStatus,
-	dsStatus,
-	(select count(1) from tb_Processo p Where s.idStatus = p.idStatus) as TotalProcessos
-FROM tb_Status s
-
-/* Outra Forma*/
 SELECT count(*) as TotalProcessos
 	   ,sum(case when s.idStatus = 1 then 1 else 0 end) as TotalAberto 
 	   ,sum(case when s.idStatus = 2 then 1 else 0 end) as TotalEncerrado 
