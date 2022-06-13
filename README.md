@@ -6,7 +6,7 @@ Para executar a aplicação:
 2) Abrir o Projeto Desafio1 (Referente a API de comunicação) no Visual Studio!
 3) Executar o projeto em como uma instância em segundo plano sem depuração 'Ctrl + F5' ou 'Menu Depurar\Executar sem depuração'
 4) Selecione o endpoint 'AddItemFila' e clique em Tryout. 
-5) Inserir a entrada json abaixo e executar:
+5) Inserir os dados de entrada do arquivo fila_moeda.json ou abaixo e executar:
 ```
 [
  {
