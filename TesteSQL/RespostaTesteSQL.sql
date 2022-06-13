@@ -2,6 +2,12 @@
 1) Com base no modelo acima, escreva um comando SQL que liste a quantidade de processos por 
 Status com sua descrição.
 /**--Exercicio 1 - TESTE SQL--**/
+SELECT idStatus,
+	dsStatus,
+	(select count(1) from tb_Processo p Where s.idStatus = p.idStatus) as TotalProcessos
+FROM tb_Status s
+
+/* Outra Forma*/
 SELECT count(*) as TotalProcessos
 	   ,sum(case when s.idStatus = 1 then 1 else 0 end) as TotalAberto 
 	   ,sum(case when s.idStatus = 2 then 1 else 0 end) as TotalEncerrado 
@@ -21,8 +27,8 @@ SELECT a.idAndamento
 		   On a.idProcesso = p.IdProcesso
 		   INNER JOIN tb_Status s 
 		   On p.idStatus = s.idStatus
-		Where p.idStatus = 2
-			And YEAR(p.DtEncerramento) = '2013'
+	    Where p.idStatus = 2 /*Status encerrado*/
+		   And YEAR(p.DtEncerramento) = '2013'
 	    Order By a.dtAndamento DESC;
 
 3) Com base no modelo acima, construa um comando SQL que liste a quantidade de Data de 
